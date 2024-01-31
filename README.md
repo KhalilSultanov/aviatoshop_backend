@@ -1,3 +1,36 @@
-# Как запускать проект (пособие для даунов).
+## AviaToShop Backend
 
-## После клонирования заходим в настройки проекта и выбираем свой интерпретатор. Далее перезагружаем консоль и вводим в нее вот это: <code> python -m pip install -r requirements.txt</code> и вуаля, все работает!
+Backend для интернет-магазина AviaToShop (еще в разработке).
+
+## Настройка проекта:
+
+### Установка виртуального окружения (Virtual Environment)
+Если у вас нет установленного virtualenv, установите его с помощью pip:
+
+<code>pip install virtualenv</code>
+
+Затем создайте и активируйте виртуальное окружение:
+
+Создание: <code>virtualenv venv</code>
+
+Активация для Linux/MacOS: <code>source venv/bin/activate</code>
+
+Активация для Windows: <code>venv\Scripts\activate</code>  # Для Windows
+
+### Установка зависимостей
+
+Убедитесь, что вы находитесь в активированном виртуальном окружении, и установите зависимости из requirements.txt:
+
+<code>pip install -r requirements.txt</code>
+
+Также стоит учесть, что для в проекте испульзуется Django 5.0.1, следовательно минимальные версии вашего Python 3.10, 3.11, 3.12.
+
+### Применение миграций
+
+Выполните миграции для создания базы данных:
+
+<code>python manage.py migrate</code>
+
+### Запуск сервера
+
+<code>python manage.py runserver</code>
