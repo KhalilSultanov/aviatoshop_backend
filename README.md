@@ -29,6 +29,8 @@ Backend для интернет-магазина AviaToShop (еще в разр�
 
 Выполните миграции для создания базы данных:
 
+<code>python manage.py makemigrations/code>
+
 <code>python manage.py migrate</code>
 
 ### Запуск сервера
