@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from aviatoProject.apps.shopAviato.views import products, product, products_by_category, trending_products, categories
@@ -10,3 +12,6 @@ urlpatterns = [
     path('trending/', trending_products, name='trending_products'),
     path('categories/', categories, name='categories'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
