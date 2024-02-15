@@ -5,9 +5,9 @@ from .models.product import Product, Size, Color, Photos, Review, Category
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['title_ru', 'title_az', 'price', 'short_description_ru', 'short_description_az',
-                    'full_description_ru', 'full_description_az', 'trading', 'sale', 'category']
+                    'full_description_ru', 'full_description_az', 'trending', 'sale', 'category']
 
-    list_filter = ['trading', 'sale', 'category']
+    list_filter = ['trending', 'sale', 'category']
     search_fields = ['title_ru', 'title_az']
     filter_horizontal = ['size', 'color', 'photos', 'reviews']
 
@@ -17,7 +17,7 @@ class ProductAdmin(admin.ModelAdmin):
          {'fields': ['short_description_ru', 'short_description_az', 'full_description_ru', 'full_description_az']}),
         ('Options', {'fields': ['color', 'size']}),
         ('Media', {'fields': ['main_photo', 'photos']}),
-        ('Settings', {'fields': ['trading', 'sale', 'reviews']}),
+        ('Settings', {'fields': ['trending', 'sale', 'reviews']}),
         ('Category', {'fields': ['category']}),
     ]
 
@@ -27,13 +27,7 @@ class ProductAdmin(admin.ModelAdmin):
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 
     def save_model(self, request, obj, form, change):
-        if not obj.id:
-            # Set defaults for new products
-            obj.trading = False
-
-        # Update the price based on the discount
         obj.price = obj.price - (obj.price * obj.sale / 100.0)
-
         super().save_model(request, obj, form, change)
 
 

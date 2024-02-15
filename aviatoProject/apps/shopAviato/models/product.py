@@ -58,7 +58,7 @@ class Product(models.Model):
     full_description_az = RichTextField(verbose_name='Полное описание (АЗ)')
     reviews = models.ManyToManyField(Review)
 
-    trading = models.BooleanField(default=False, verbose_name='В тренде')
+    trending = models.BooleanField(default=False, verbose_name='В тренде')
     sale = models.FloatField(default=0.0, verbose_name='Скидка')
 
     class Meta:
