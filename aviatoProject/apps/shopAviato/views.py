@@ -1,8 +1,7 @@
-from django.db.models import Q
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models.product import Product, Category
-from .serializers.serializer import ProductSerializer, CategorySerializer
+from .serializers.serializer import ProductSerializer, CategorySerializer, PhotoSerializer
 
 
 @api_view(['GET'])
@@ -21,6 +20,17 @@ def product(request, id):
 
     serializer = ProductSerializer(product)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def product_by_title_name(request):
+    title = request.query_params.get('title')
+    if title:
+        products = Product.objects.filter(title_ru__icontains=title)
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({"message": "Название продукта не указано"}, status=400)
 
 
 @api_view(['GET'])
@@ -54,6 +64,7 @@ def search_products(request):
     if query:
         def lower_function(s):
             return str(s).lower()
+
         connection.connection.create_function('lower', 1, lower_function)
         products = Product.objects.raw(
             'SELECT * FROM shopaviato_product WHERE lower(title_ru) LIKE %s OR lower(title_az) LIKE %s',
@@ -63,3 +74,15 @@ def search_products(request):
         return Response(serializer.data)
     else:
         return Response([])
+
+
+@api_view(['GET'])
+def product_photos(request, product_id):
+    try:
+        product = Product.objects.get(pk=product_id)
+    except Product.DoesNotExist:
+        return Response({'message': 'Товар не найден'}, status=404)
+
+    photos = product.photos.all()
+    serializer = PhotoSerializer(photos, many=True)
+    return Response(serializer.data)

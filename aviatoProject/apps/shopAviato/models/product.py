@@ -1,6 +1,9 @@
 # models.py
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.template.defaultfilters import slugify
 
 
 class Category(models.Model):
@@ -63,3 +66,4 @@ class Product(models.Model):
 
     class Meta:
         verbose_name_plural = 'Товары'
+
