@@ -16,7 +16,7 @@ SECRET_KEY = 'django-insecure-yhyz^u_#0!-qhkil%fe5n&ycm12o$0)h+73ahei)w%bg*c(-m(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'ckeditor',
+    'corsheaders',
     'rest_framework',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -127,7 +128,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'gstatic')
+STATIC_URL = '/gstatic/'
 
 
 # Default primary key field type
