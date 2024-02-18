@@ -84,5 +84,5 @@ def product_photos(request, product_id):
         return Response({'message': 'Товар не найден'}, status=404)
 
     photos = product.photos.all()
-    serializer = PhotoSerializer(photos, many=True)
+    serializer = PhotoSerializer(photos, many=True, context={'product_id': product_id, 'request': request})
     return Response(serializer.data)

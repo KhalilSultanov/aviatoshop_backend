@@ -130,6 +130,9 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'gstatic')
 STATIC_URL = '/gstatic/'
+MEDIA_URL = '/photos/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'photos')
+
 
 
 # Default primary key field type
