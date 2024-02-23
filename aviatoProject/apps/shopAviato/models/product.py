@@ -41,7 +41,7 @@ class Photos(models.Model):
 
 
 class Product(models.Model):
-    main_photo = models.ImageField(upload_to='photos')
+    main_photo = models.ImageField()
     photos = models.ManyToManyField(Photos)
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория', related_name='products',

@@ -2,6 +2,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models.product import Product, Category
 from .serializers.serializer import ProductSerializer, CategorySerializer, PhotoSerializer
+from django.db import connection
+from django.db import connections
+
+
 
 
 @api_view(['GET'])
@@ -53,10 +57,6 @@ def categories(request):
     serializer = CategorySerializer(all_categories, many=True)
     return Response(serializer.data)
 
-
-from django.db import connection
-
-
 @api_view(['GET'])
 def search_products(request):
     query = request.query_params.get('q', '').lower()
@@ -65,13 +65,14 @@ def search_products(request):
         def lower_function(s):
             return str(s).lower()
 
-        connection.connection.create_function('lower', 1, lower_function)
-        products = Product.objects.raw(
-            'SELECT * FROM shopaviato_product WHERE lower(title_ru) LIKE %s OR lower(title_az) LIKE %s',
-            ['%' + query + '%', '%' + query + '%']
-        )
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
+        with connections['default'].cursor() as cursor:
+            cursor.connection.create_function('lower', 1, lower_function)
+            products = Product.objects.raw(
+                'SELECT * FROM shopaviato_product WHERE lower(title_ru) LIKE %s OR lower(title_az) LIKE %s',
+                ['%' + query + '%', '%' + query + '%']
+            )
+            serializer = ProductSerializer(products, many=True)
+            return Response(serializer.data)
     else:
         return Response([])
 
