@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from aviatoProject.apps.shopAviato.models.product import Product, Category, Photos
+from aviatoProject.apps.shopAviato.models.product import Product, Category, Photos, Review, Size, Color
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -9,9 +9,19 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
+        model = Review
+        fields = ['name', 'text', 'date_time']
+
+class ColorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Color
+        fields = '__all__'
+
+class SizeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Size
         fields = '__all__'
 
 
@@ -19,3 +29,17 @@ class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photos
         fields = ['photo']
+
+class ProductSerializer(serializers.ModelSerializer):
+    reviews = ReviewSerializer(many=True, read_only=True)  # Добавляем поле для комментариев
+    color = ColorSerializer(many=True, read_only=True)  # Добавляем поле для цветов
+    size = SizeSerializer(many=True, read_only=True)  # Добавляем поле для размеров
+    category = CategorySerializer(read_only=True)  # Добавляем поле для категории
+    photos = PhotoSerializer(many=True, read_only=True)  # Добавляем поле для фотографий
+
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
+
