@@ -25,15 +25,16 @@ def product(request, id):
     return Response(serializer.data)
 
 
+# views.py
 @api_view(['GET'])
-def product_by_title_name(request):
-    title = request.query_params.get('title_en')  # изменение параметра на 'title_en'
-    if title:
-        products = Product.objects.filter(title_en__icontains=title)  # изменение поля на 'title_en'
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
-    else:
-        return Response({"message": "Product title not specified"}, status=400)
+def product_by_title_name(request, title_en):
+    try:
+        product = Product.objects.get(title_en=title_en)
+    except Product.DoesNotExist:
+        return Response(status=404)
+
+    serializer = ProductSerializer(product)
+    return Response(serializer.data)
 
 
 
