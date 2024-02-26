@@ -8,7 +8,7 @@ from aviatoProject.apps.shopAviato import views
 # и включаем их здесь с префиксом 'api/'
 shop_aviato_urls = [
     path('products/', views.products, name='products'),
-    path('product/<str:title_en>/', views.product_by_title_name, name='product-by-title-name'),
+    path('product/<int:id>/', views.product, name='product'),
     path('products/category/<int:category_id>/', views.products_by_category, name='products_by_category'),
     path('trending/', views.trending_products, name='trending_products'),
     path('categories/', views.categories, name='categories'),

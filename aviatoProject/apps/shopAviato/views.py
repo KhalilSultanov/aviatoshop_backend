@@ -27,14 +27,14 @@ def product(request, id):
 
 # views.py
 @api_view(['GET'])
-def product_by_title_name(request, title_en):
-    try:
-        product = Product.objects.get(title_en=title_en)
-    except Product.DoesNotExist:
-        return Response(status=404)
-
-    serializer = ProductSerializer(product)
-    return Response(serializer.data)
+def product_by_title_name(request):
+    title = request.query_params.get('title_en')  # изменение параметра на 'title_en'
+    if title:
+        products = Product.objects.filter(title_en__icontains=title)  # изменение поля на 'title_en'
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({"message": "Product title not specified"}, status=400)
 
 
 
@@ -69,13 +69,15 @@ def search_products(request):
         with connections['default'].cursor() as cursor:
             cursor.connection.create_function('lower', 1, lower_function)
             products = Product.objects.raw(
-                'SELECT * FROM shopaviato_product WHERE lower(title_ru) LIKE %s OR lower(title_az) LIKE %s',
-                ['%' + query + '%', '%' + query + '%']
+                'SELECT * FROM shopaviato_product WHERE '
+                'lower(title_ru) LIKE %s OR lower(title_az) LIKE %s OR lower(title_en) LIKE %s',
+                ['%' + query + '%', '%' + query + '%', '%' + query + '%']
             )
             serializer = ProductSerializer(products, many=True)
             return Response(serializer.data)
     else:
         return Response([])
+
 
 
 @api_view(['GET'])
