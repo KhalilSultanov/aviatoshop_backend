@@ -1,9 +1,6 @@
 # models.py
 from django.db import models
 from ckeditor.fields import RichTextField
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
-from django.template.defaultfilters import slugify
 
 
 class Category(models.Model):
@@ -49,6 +46,7 @@ class Product(models.Model):
 
     title_ru = models.CharField(max_length=500, verbose_name='Название товара (РУ)')
     title_az = models.CharField(max_length=500, verbose_name='Название товара (АЗ)')
+    title_en = models.CharField(max_length=500, verbose_name='Название товара (АНГЛ)')
 
     price = models.IntegerField()
 

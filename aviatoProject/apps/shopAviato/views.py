@@ -2,7 +2,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models.product import Product, Category
 from .serializers.serializer import ProductSerializer, CategorySerializer, PhotoSerializer
-from django.db import connection
 from django.db import connections
 
 
@@ -28,13 +27,14 @@ def product(request, id):
 
 @api_view(['GET'])
 def product_by_title_name(request):
-    title = request.query_params.get('title')
+    title = request.query_params.get('title_en')  # изменение параметра на 'title_en'
     if title:
-        products = Product.objects.filter(title_ru__icontains=title)
+        products = Product.objects.filter(title_en__icontains=title)  # изменение поля на 'title_en'
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
     else:
-        return Response({"message": "Название продукта не указано"}, status=400)
+        return Response({"message": "Product title not specified"}, status=400)
+
 
 
 @api_view(['GET'])
