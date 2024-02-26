@@ -4,7 +4,7 @@ from .models.product import Product, Size, Color, Photos, Review, Category
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['title_ru', 'title_az', 'title_en', 'price', 'short_description_ru', 'short_description_az',
+    list_display = ['title_ru', 'title_az', 'title_en', 'price', 'quantity', 'short_description_ru', 'short_description_az',
                     'full_description_ru', 'full_description_az', 'trending', 'sale', 'category']
 
     list_filter = ['trending', 'sale', 'category']
@@ -12,7 +12,7 @@ class ProductAdmin(admin.ModelAdmin):
     filter_horizontal = ['size', 'color', 'photos', 'reviews']
 
     fieldsets = [
-        ('Main Information', {'fields': ['title_ru', 'title_az', 'title_en', 'price']}),
+        ('Main Information', {'fields': ['title_ru', 'title_az', 'title_en', 'price', 'quantity']}),
         ('Descriptions',
          {'fields': ['short_description_ru', 'short_description_az', 'full_description_ru', 'full_description_az']}),
         ('Options', {'fields': ['color', 'size']}),

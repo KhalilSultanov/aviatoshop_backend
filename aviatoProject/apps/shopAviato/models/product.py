@@ -49,6 +49,7 @@ class Product(models.Model):
     title_en = models.CharField(max_length=500, verbose_name='Название товара (АНГЛ)')
 
     price = models.IntegerField()
+    quantity = models.IntegerField(default=1)
 
     short_description_ru = models.CharField(max_length=1500, verbose_name='Краткое описание (РУ)')
     short_description_az = models.CharField(max_length=1500, verbose_name='Краткое описание (АЗ)')
