@@ -68,12 +68,11 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    customer_name = models.CharField(max_length=255)
-    customer_email = models.EmailField()
-    customer_address = models.TextField()
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    address = models.TextField()
 
     def __str__(self):
         return f"Order {self.pk}"
-
 
 
