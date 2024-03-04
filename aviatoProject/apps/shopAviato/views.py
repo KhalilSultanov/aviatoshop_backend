@@ -1,7 +1,8 @@
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models.product import Product, Category
-from .serializers.serializer import ProductSerializer, CategorySerializer, PhotoSerializer
+from .serializers.serializer import ProductSerializer, CategorySerializer, PhotoSerializer, OrderSerializer
 from django.db import connections
 
 
@@ -90,3 +91,12 @@ def product_photos(request, product_id):
     photos = product.photos.all()
     serializer = PhotoSerializer(photos, many=True, context={'product_id': product_id, 'request': request})
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+def create_order(request):
+    serializer = OrderSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

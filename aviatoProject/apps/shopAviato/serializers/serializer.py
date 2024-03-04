@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from aviatoProject.apps.shopAviato.models.product import Product, Category, Photos, Review, Size, Color
+from aviatoProject.apps.shopAviato.models.product import Product, Category, Photos, Review, Size, Color, Order
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -42,4 +42,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = '__all__'
