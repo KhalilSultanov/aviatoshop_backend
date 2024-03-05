@@ -95,7 +95,6 @@ def product_photos(request, product_id):
 
 @api_view(['POST'])
 def create_order(request):
-    # Переименовываем поля, чтобы они совпадали с полями на фронтенде
     print("Received order data:", request.data)
     serializer = OrderSerializer(data=request.data)
     if serializer.is_valid():
