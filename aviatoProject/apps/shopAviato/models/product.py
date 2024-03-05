@@ -71,7 +71,7 @@ class Order(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     address = models.TextField()
-    product_name = models.TextField()
+    product_name = models.TextField(default='')
     def __str__(self):
         return f"Order {self.pk}"
 
