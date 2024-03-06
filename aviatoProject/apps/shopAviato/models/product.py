@@ -67,12 +67,13 @@ class Product(models.Model):
         verbose_name_plural = 'Товары'
 
 
-class Order(models.Model):
-    name = models.CharField(max_length=255)
-    email = models.EmailField()
-    address = models.TextField()
-    product_name = models.TextField(default='')
-    def __str__(self):
-        return f"Order {self.pk}"
+class PurchuaseQuntity(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
 
-
+class Purchuase(models.Model):
+    fullname = models.CharField(max_length=1000)
+    phone_number = models.CharField(max_length=30)
+    message = models.CharField(max_length=2000)
+    address = models.CharField(max_length=2000)
+    products = models.ManyToManyField(PurchuaseQuntity, blank=True)

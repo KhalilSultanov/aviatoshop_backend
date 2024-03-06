@@ -1,9 +1,13 @@
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models.product import Product, Category
-from .serializers.serializer import ProductSerializer, CategorySerializer, PhotoSerializer, OrderSerializer
+from .models.product import Product, Category, Purchuase, PurchuaseQuntity
+from .serializers.serializer import ProductSerializer, CategorySerializer, PhotoSerializer
 from django.db import connections
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 
@@ -93,11 +97,23 @@ def product_photos(request, product_id):
     return Response(serializer.data)
 
 
-@api_view(['POST'])
-def create_order(request):
-    print("Received order data:", request.data)
-    serializer = OrderSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@csrf_exempt
+def purchase_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+
+        purchase = Purchuase.objects.create(
+            fullname=data.get('fullname', ''),
+            phone_number=data.get('phone_number', ''),
+            message=data.get('message', ''),
+            address=data.get('address', '')
+        )
+
+        for product_id, quantity in data.get('products', {}).items():
+            product = Product.objects.get(pk=product_id)
+            purchase_quantity = PurchuaseQuntity.objects.create(product=product, quantity=quantity)
+            purchase.products.add(purchase_quantity)
+
+        return JsonResponse({'message': 'Purchase created successfully'})
+    else:
+        return JsonResponse({'message': 'Invalid request method'})

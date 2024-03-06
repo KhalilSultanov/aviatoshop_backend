@@ -3,7 +3,7 @@ from django.urls import path, include  # Используйте include для �
 from django.conf import settings
 from django.conf.urls.static import static
 from aviatoProject.apps.shopAviato import views
-from aviatoProject.apps.shopAviato.views import create_order
+from aviatoProject.apps.shopAviato.views import purchase_view
 
 # Определяем URL-адреса, специфичные для приложения, в отдельном файле (например, shopAviato/urls.py)
 # и включаем их здесь с префиксом 'api/'
@@ -21,7 +21,7 @@ shop_aviato_urls = [
 urlpatterns = [
     path('admin/', admin.site.urls),  # Удалите 'api/' из пути админ-панели
     path('api/', include(shop_aviato_urls)),  # Используйте include для API-путей
-    path('api/checkout/', create_order, name='create_order'),
+    path('api/checkout/', purchase_view, name='create_order'),
 ]
 
 # Добавляем маршруты для медиафайлов только в режиме DEBUG
