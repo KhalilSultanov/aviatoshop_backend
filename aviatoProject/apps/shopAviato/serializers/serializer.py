@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from aviatoProject.apps.shopAviato.models.product import Product, Category, Photos, Review, Size, Color, \
-    PurchuaseQuntity, Purchuase
+    PurchuaseQuntity, Purchuase, ContactForm
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -55,3 +55,7 @@ class PurchuaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Purchuase
         fields = '__all__'
+class ContactFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactForm
+        fields = ['id', 'fullname', 'contacts', 'message']

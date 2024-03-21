@@ -1,13 +1,13 @@
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models.product import Product, Category, Purchuase, PurchuaseQuntity
-from .serializers.serializer import ProductSerializer, CategorySerializer, PhotoSerializer
+from .models.product import Product, Category, Purchuase, PurchuaseQuntity, ContactForm
+from .serializers.serializer import ProductSerializer, CategorySerializer, PhotoSerializer, ContactFormSerializer
 from django.db import connections
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+
 
 
 
@@ -113,7 +113,25 @@ def purchase_view(request):
             product = Product.objects.get(pk=product_id)
             purchase_quantity = PurchuaseQuntity.objects.create(product=product, quantity=quantity)
             purchase.products.add(purchase_quantity)
+            products_data = [{'id': item.product.id, 'name': item.product.title_en, 'quantity': item.quantity} for item
+                             in purchase.products.all()]
 
-        return JsonResponse({'message': 'Purchase created successfully'})
+        return JsonResponse({'message': 'Purchase created successfully', 'products': products_data})
     else:
         return JsonResponse({'message': 'Invalid request method'})
+
+
+
+
+@csrf_exempt
+def contact_form_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        serializer = ContactFormSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({'success': True, 'message': 'Contact form submitted successfully.'}, status=201)
+        else:
+            return JsonResponse({'success': False, 'errors': serializer.errors}, status=400)
+    else:
+        return JsonResponse({'success': False, 'message': 'Only POST requests are allowed.'}, status=405)

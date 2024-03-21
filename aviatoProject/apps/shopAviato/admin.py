@@ -1,6 +1,6 @@
 # admin.py
 from django.contrib import admin
-from .models.product import Product, Size, Color, Photos, Review, Category
+from .models.product import Product, Size, Color, Photos, Review, Category, ContactForm
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -21,6 +21,10 @@ class ProductAdmin(admin.ModelAdmin):
         ('Category', {'fields': ['category']}),
     ]
 
+    class ContactFormAdmin(admin.ModelAdmin):
+        list_display = ['fullname', 'contacts', 'message']
+        search_fields = ['fullname', 'contacts', 'message']
+
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == 'size' or db_field.name == 'color' or db_field.name == 'photos' or db_field.name == 'reviews':
             kwargs['queryset'] = db_field.related_model.objects.all()
@@ -37,3 +41,4 @@ admin.site.register(Color)
 admin.site.register(Photos)
 admin.site.register(Review)
 admin.site.register(Category)
+admin.site.register(ContactForm)

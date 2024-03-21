@@ -39,7 +39,7 @@ class Photos(models.Model):
 
 class Product(models.Model):
     main_photo = models.ImageField()
-    photos = models.ManyToManyField(Photos)
+    photos = models.ManyToManyField(Photos, blank=True)
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория', related_name='products',
                                  default='')
@@ -77,3 +77,8 @@ class Purchuase(models.Model):
     message = models.CharField(max_length=2000)
     address = models.CharField(max_length=2000)
     products = models.ManyToManyField(PurchuaseQuntity, blank=True)
+
+class ContactForm(models.Model):
+    fullname = models.CharField(max_length=1000)
+    contacts = models.TextField(max_length=100)
+    message = models.CharField(max_length=2000)

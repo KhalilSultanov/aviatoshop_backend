@@ -3,10 +3,8 @@ from django.urls import path, include  # Используйте include для �
 from django.conf import settings
 from django.conf.urls.static import static
 from aviatoProject.apps.shopAviato import views
-from aviatoProject.apps.shopAviato.views import purchase_view
+from aviatoProject.apps.shopAviato.views import purchase_view, contact_form_view
 
-# Определяем URL-адреса, специфичные для приложения, в отдельном файле (например, shopAviato/urls.py)
-# и включаем их здесь с префиксом 'api/'
 shop_aviato_urls = [
     path('products/', views.products, name='products'),
     path('product/<int:id>/', views.product, name='product'),
@@ -16,6 +14,8 @@ shop_aviato_urls = [
     path('products/search/', views.search_products, name='search_products'),
     path('product/<int:product_id>/photos/', views.product_photos, name='product-photos'),
     path('product_by_name/', views.product_by_title_name, name='product-by-title-name'),
+    path('submit-contact-form/', contact_form_view, name='submit_contact_form'),
+
 ]
 
 urlpatterns = [
