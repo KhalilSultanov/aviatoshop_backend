@@ -1,6 +1,6 @@
 ## AviaToShop Backend
 
-Backend для интернет-магазина AviaToShop (еще в разработке).
+Backend для интернет-магазина AviaToShop.
 
 ## Настройка проекта:
 
